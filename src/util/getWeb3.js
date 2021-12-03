@@ -1,5 +1,4 @@
 import Web3 from "web3";
-import detectEthereumProvider from "@metamask/detect-provider";
 
 /*
  * 1. Check for injected web3 (mist/metamask)
@@ -11,29 +10,28 @@ import detectEthereumProvider from "@metamask/detect-provider";
 
 let getWeb3 = new Promise(function (resolve, reject) {
   // Check for injected web3 (mist/metamask)
-  const provider = detectEthereumProvider();
-  if (provider) {
-    // From now on, this should always be true:
-    // provider === window.ethereum
-    var web3js = provider;
-    if (typeof web3js !== "undefined") {
-      var web3 = new Web3(Web3.givenProvider);
-      resolve({
-        injectedWeb3: web3js.isConnected,
-        web3() {
-          return web3;
-        },
-      });
-    } else {
-      // web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')) GANACHE FALLBACK
-      reject(new Error("Unable to connect to Metamask"));
-    }
+  // From now on, this should always be true:
+  // provider === window.ethereum
+  if (window.ethereum) {
+    window.ethereum.send('eth_requestAccounts');
+    window.web3 = new Web3(window.ethereum);
+    var web3 = window.web3;
+    resolve({
+      injectedWeb3: window.ethereum.isMetaMask,
+      web3() {
+        console.log(web3)
+        return web3;
+      },
+    });
+  } else {
+    // web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')) GANACHE FALLBACK
+    reject(new Error("Unable to connect to Metamask"));
   }
 })
   .then((result) => {
     return new Promise(function (resolve, reject) {
       // Retrieve network ID
-      console.log(result.web3());
+      console.log(result.web3().eth)
       result.web3().eth.net.getId((err, networkId) => {
         if (err) {
           // If we can't find a networkId keep result the same and reject the promise
