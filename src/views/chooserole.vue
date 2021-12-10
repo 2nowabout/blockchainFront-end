@@ -9,7 +9,7 @@
         cols="4"
       >
         <v-card>
-          <v-img contain height="350" src="https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png" ></v-img>
+          <v-img contain height="350" :src="allRoles[index - 1].link" ></v-img>
               <v-card-title class="justify-center" style="margin-top: -8px; text-align: center">{{
                 allRoles[index - 1].name
               }}</v-card-title>  
@@ -52,12 +52,12 @@ export default {
     let role2 = {
       id: 2,
       name: "Employer",
-      link: "https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png",
+      link: "https://static.thenounproject.com/png/1050475-200.png",
     };
     let role3 = {
       id: 3,
       name: "Verifier",
-      link: "https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png",
+      link: "https://icon-library.com/images/verification-icon/verification-icon-17.jpg",
     };
     this.allRoles.push(role1);
     this.allRoles.push(role2);
