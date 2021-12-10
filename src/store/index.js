@@ -17,6 +17,14 @@ export default new Vuex.Store({
       error: null,
     },
     contractInstance: null,
+    logincode: null,
+    succesfullLogin: false,
+    choosenRole: null,
+  },
+  getters: {
+    getCode: (state) => state.logincode,
+    getSuccesfullLogin: (state) => state.succesfullLogin,
+    getChosenRole: (state) => state.choosenRole,
   },
   mutations: {
     registerWeb3Instance(state, payload) {
@@ -41,6 +49,20 @@ export default new Vuex.Store({
       console.log("Certificate contract instance: ", payload);
       state.contractInstance = () => payload;
     },
+    registercode(state, code) {
+      state.logincode = code;
+    },
+    succesfullCode(state) {
+      state.succesfullLogin = true;
+    },
+    fullReset(state) {
+      state.succesfullLogin = false;
+      state.logincode = null;
+      state.choosenRole = null;
+    },
+    setRole(state, role) {
+      state.choosenRole = role;
+    }
   },
   actions: {
     registerWeb3({ commit }) {

@@ -13,13 +13,13 @@ let getWeb3 = new Promise(function (resolve, reject) {
   // From now on, this should always be true:
   // provider === window.ethereum
   if (window.ethereum) {
-    window.ethereum.send('eth_requestAccounts');
+    window.ethereum.send("eth_requestAccounts");
     window.web3 = new Web3(window.ethereum);
     var web3 = window.web3;
     resolve({
       injectedWeb3: window.ethereum.isMetaMask,
       web3() {
-        console.log(web3)
+        console.log(web3);
         return web3;
       },
     });
@@ -31,7 +31,7 @@ let getWeb3 = new Promise(function (resolve, reject) {
   .then((result) => {
     return new Promise(function (resolve, reject) {
       // Retrieve network ID
-      console.log(result.web3().eth)
+      console.log(result.web3().eth);
       result.web3().eth.net.getId((err, networkId) => {
         if (err) {
           // If we can't find a networkId keep result the same and reject the promise
