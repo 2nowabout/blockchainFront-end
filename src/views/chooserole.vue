@@ -2,27 +2,27 @@
   <div>
     <TopBar />
     <v-container>
-    <v-row>
-      <v-col
-        v-for="index in this.allRoles.length"
-        v-bind:key="index"
-        cols="4"
-      >
-        <v-card>
-          <v-img contain height="350" :src="allRoles[index - 1].link" ></v-img>
-              <v-card-title class="justify-center" style="margin-top: -8px; text-align: center">{{
-                allRoles[index - 1].name
-              }}</v-card-title>  
-              <v-card-actions class="justify-center">
-              <v-btn
-                @click="chooseRole(allRoles[index - 1])"
-                >Select</v-btn
-              >
-            </v-card-actions>         
-        </v-card>
-      </v-col>
+      <h1 style="text-align: center">Choose your role!</h1>
+      <v-row>
+        <v-col
+          v-for="index in this.allRoles.length"
+          v-bind:key="index"
+          cols="4"
+        >
+          <v-card>
+            <v-img contain height="350" :src="allRoles[index - 1].link"></v-img>
+            <v-card-title
+              class="justify-center"
+              style="margin-top: -8px; text-align: center"
+              >{{ allRoles[index - 1].name }}</v-card-title
+            >
+            <v-card-actions class="justify-center">
+              <v-btn @click="chooseRole(allRoles[index - 1])">Select</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
       </v-row>
-      <p> {{choosenRole.name}} </p>
+      <p>{{ choosenRole.name }}</p>
     </v-container>
   </div>
 </template>
@@ -47,7 +47,7 @@ export default {
     let role1 = {
       id: 1,
       name: "Normal user",
-      link: "https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png",
+      link: "https://cdn1.iconfinder.com/data/icons/app-user-interface-glyph/64/user_man_user_interface_app_person-512.png",
     };
     let role2 = {
       id: 2,
@@ -77,10 +77,18 @@ export default {
     TopBar: TopBar,
   },
   methods: {
-    chooseRole(role)
-    {
+    chooseRole(role) {
       this.$store.commit("setRole", role);
-    }
+      if (role.id == 1) {
+        this.$router.push("userpage");
+      }
+      if (role.id == 2) {
+        this.$router.push("employer");
+      }
+      if (role.id == 3) {
+        this.$router.push("verifier");
+      }
+    },
   },
 };
 </script>

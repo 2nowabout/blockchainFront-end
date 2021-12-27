@@ -7,13 +7,17 @@
         <v-btn @click="toBegin()"> To begin </v-btn>
         <v-col xs="1" sm="1" md="1" lg="1" xl="1"> </v-col>
         <v-btn @click="toChooseRole()"> Choose role </v-btn>
+        <v-col xs="1" sm="1" md="1" lg="1" xl="1"> </v-col>
+        <div v-if="this.$store.getters.getChosenRole != null">
+        <v-btn @click="ToRole()"> To Role </v-btn>
+      </div>
       </v-row>
       <v-spacer></v-spacer>
       <v-btn @click="toStart()" icon>
         <v-icon>mdi-export</v-icon>
       </v-btn>
     </v-toolbar>
-  </div>
+  </div> 
 </template>
 <style>
 .row {
@@ -33,6 +37,17 @@ export default {
     },
     toBegin() {
       this.$router.push("beginpage");
+    },
+    ToRole() {
+      if (this.$store.getters.getChosenRole.id == 1) {
+        this.$router.push("userpage");
+      }
+      if (this.$store.getters.getChosenRole.id == 2) {
+        this.$router.push("employer");
+      }
+      if (this.$store.getters.getChosenRole.id == 3) {
+        this.$router.push("verifier");
+      }
     },
   },
 };

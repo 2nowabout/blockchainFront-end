@@ -5,6 +5,9 @@ import chooserole from "../views/chooserole.vue";
 import start from "../views/start.vue";
 import store from "../store";
 import beginpage from "../views/beginPage.vue";
+import userpage from "../views/userpage.vue";
+import employer from "../views/employerpage.vue";
+import verifier from "../views/verifierpage.vue";
 
 Vue.use(VueRouter);
 
@@ -32,6 +35,24 @@ const routes = [
     component: certificate,
     meta: { requireRole: true },
   },
+  {
+    path: "/userpage",
+    name: "userpage",
+    component: userpage,
+    meta: { requireRole: true },
+  },
+  {
+    path: "/employer",
+    name: "employer",
+    component: employer,
+    meta: { requireRole: true },
+  },
+  {
+    path: "/verifier",
+    name: "verifier",
+    component: verifier,
+    meta: { requireRole: true },
+  },
 ];
 
 const router = new VueRouter({
@@ -40,7 +61,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireRole) {
-    if (store.getters.getRole == null) {
+    if (store.getters.getChosenRole == null) {
       next({ name: "chooserole" });
     }
     if (!store.getters.getSuccesfullLogin) {

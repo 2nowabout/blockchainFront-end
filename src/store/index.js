@@ -62,7 +62,7 @@ export default new Vuex.Store({
     },
     setRole(state, role) {
       state.choosenRole = role;
-    }
+    },
   },
   actions: {
     registerWeb3({ commit }) {
