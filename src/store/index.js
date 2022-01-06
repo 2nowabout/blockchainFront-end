@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import getWeb3 from "../util/getWeb3";
+import start from "../util/getWeb3";
 import pollWeb3 from "../util/pollWeb3";
 import getContract from "../util/getContract";
 
@@ -20,11 +20,16 @@ export default new Vuex.Store({
     logincode: null,
     succesfullLogin: false,
     choosenRole: null,
+    items: [
+      { text: "Home", to: "/home" },
+      { text: "Choose Role", to: "/role" },
+    ],
   },
   getters: {
     getCode: (state) => state.logincode,
     getSuccesfullLogin: (state) => state.succesfullLogin,
     getChosenRole: (state) => state.choosenRole,
+    getNavItems: (state) => state.items,
   },
   mutations: {
     registerWeb3Instance(state, payload) {
@@ -63,11 +68,20 @@ export default new Vuex.Store({
     setRole(state, role) {
       state.choosenRole = role;
     },
+    addNavItem(state, item) {
+      for (let i = 0; i < state.items.length; i++) {
+        if (state.items[i].text == item.text) {
+          state.items[i] = item;
+          return;
+        }
+      }
+      state.items.push(item);
+    },
   },
   actions: {
     registerWeb3({ commit }) {
       console.log("registerWeb3 Action being executed");
-      getWeb3
+      start()
         .then((result) => {
           console.log("committing result to registerWeb3Instance mutation");
           commit("registerWeb3Instance", result);

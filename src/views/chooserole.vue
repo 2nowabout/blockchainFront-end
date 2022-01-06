@@ -1,94 +1,103 @@
 <template>
-  <div>
-    <TopBar />
-    <v-container>
-      <h1 style="text-align: center">Choose your role!</h1>
-      <v-row>
-        <v-col
-          v-for="index in this.allRoles.length"
-          v-bind:key="index"
-          cols="4"
+  <div class="fill-height d-flex flex-column" style="width: 100%">
+    <h1 class="text-center white--text">Please select your role</h1>
+    <v-row align="center">
+      <v-col cols="4" v-for="(item, index) in this.cards" :key="index">
+        <v-card
+          tile
+          class="mx-auto text-center"
+          color="card"
+          @click="redirect(item.name)"
+          :ripple="false"
         >
-          <v-card>
-            <v-img contain height="350" :src="allRoles[index - 1].link"></v-img>
-            <v-card-title
-              class="justify-center"
-              style="margin-top: -8px; text-align: center"
-              >{{ allRoles[index - 1].name }}</v-card-title
-            >
-            <v-card-actions class="justify-center">
-              <v-btn @click="chooseRole(allRoles[index - 1])">Select</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-      <p>{{ choosenRole.name }}</p>
-    </v-container>
+          <v-icon class="card-text">{{ item.icon }}</v-icon>
+
+          <v-card-title class="justify-center card-text">{{
+            item.name
+          }}</v-card-title>
+        </v-card>
+      </v-col>
+      <v-col cols="4"></v-col>
+      <v-col style="margin-top: -20%" cols="4">
+        <v-btn @click="connectMetamask" color="orange accent-3" width="100%">
+          <v-icon left>$vuetify.icons.metamaskicon</v-icon> Connect to
+          Metamask!</v-btn
+        >
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
-import TopBar from "@/components/TopBar";
 export default {
-  name: "certificate-dapp",
+  name: "chooserole",
   beforeMount() {
     console.log("registerWeb3 Action dispatched from casino-dapp.vue");
     this.$store.dispatch("registerWeb3");
-    let default1 = {
-      id: 0,
-      name: "NotChosen",
-      link: "null",
-    };
-    this.$store.commit("setRole", default1);
   },
   mounted() {
     console.log("dispatching getContractInstance");
     this.$store.dispatch("getContractInstance");
-    let role1 = {
-      id: 1,
-      name: "Normal user",
-      link: "https://cdn1.iconfinder.com/data/icons/app-user-interface-glyph/64/user_man_user_interface_app_person-512.png",
-    };
-    let role2 = {
-      id: 2,
-      name: "Employer",
-      link: "https://static.thenounproject.com/png/1050475-200.png",
-    };
-    let role3 = {
-      id: 3,
-      name: "Verifier",
-      link: "https://icon-library.com/images/verification-icon/verification-icon-17.jpg",
-    };
-    this.allRoles.push(role1);
-    this.allRoles.push(role2);
-    this.allRoles.push(role3);
   },
-  computed: {
-    choosenRole() {
-      return this.$store.state.choosenRole;
-    },
-  },
-  data() {
-    return {
-      allRoles: [],
-    };
-  },
-  components: {
-    TopBar: TopBar,
-  },
+  data: () => ({
+    cards: [
+      {
+        id: 1,
+        name: "Normal user",
+        icon: "mdi-account-circle",
+      },
+      {
+        id: 2,
+        name: "Employer",
+        icon: "mdi-briefcase",
+      },
+      {
+        id: 3,
+        name: "Verifier",
+        icon: "mdi-gavel",
+      },
+    ],
+  }),
   methods: {
-    chooseRole(role) {
-      this.$store.commit("setRole", role);
-      if (role.id == 1) {
-        this.$router.push("userpage");
-      }
-      if (role.id == 2) {
-        this.$router.push("employer");
-      }
-      if (role.id == 3) {
-        this.$router.push("verifier");
+    connectMetamask() {
+      this.$store.dispatch("registerWeb3");
+    },
+    redirect: function (type) {
+      // route to correct page when clicked on card 🙂
+      switch (type) {
+        case "Normal user":
+          this.$router.push("userpage");
+          this.$store.commit("addNavItem", {
+            text: "To Role",
+            to: "/userpage",
+          });
+          break;
+        case "Employer":
+          this.$router.push("employer");
+          this.$store.commit("addNavItem", {
+            text: "To Role",
+            to: "/employer",
+          });
+          break;
+        case "Verifier":
+          this.$router.push("verifier");
+          this.$store.commit("addNavItem", {
+            text: "To Role",
+            to: "/verifier",
+          });
+          break;
       }
     },
   },
 };
 </script>
+
+<style scoped>
+.v-icon.v-icon {
+  font-size: 400px;
+}
+
+.card-text {
+  color: var(--v-cardtext);
+}
+</style>

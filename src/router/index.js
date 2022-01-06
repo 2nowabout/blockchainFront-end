@@ -1,77 +1,67 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import certificate from "../views/certificate-dapp.vue";
-import chooserole from "../views/chooserole.vue";
-import start from "../views/start.vue";
+import Home from "../views/Home.vue";
+import Container from "../views/Container.vue";
+import chooseRole from "../views/chooserole.vue";
+import Login from "../views/Login.vue";
 import store from "../store";
-import beginpage from "../views/beginPage.vue";
 import userpage from "../views/userpage.vue";
-import employer from "../views/employerpage.vue";
-import verifier from "../views/verifierpage.vue";
+//import employer from "../views/employerpage.vue";
+//import verifier from "../views/verifierpage.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
+    path: "/login",
+    name: "Login",
+    component: Login,
+  },
+  {
     path: "/",
-    name: "start",
-    component: start,
-  },
-  {
-    path: "/beginpage",
-    name: "beginpage",
-    component: beginpage,
-    meta: { requireCode: true },
-  },
-  {
-    path: "/chooserole",
-    name: "chooserole",
-    component: chooserole,
-    meta: { requireCode: true },
-  },
-  {
-    path: "/main",
-    name: "certificate-dapp",
-    component: certificate,
-    meta: { requireRole: true },
-  },
-  {
-    path: "/userpage",
-    name: "userpage",
-    component: userpage,
-    meta: { requireRole: true },
-  },
-  {
-    path: "/employer",
-    name: "employer",
-    component: employer,
-    meta: { requireRole: true },
-  },
-  {
-    path: "/verifier",
-    name: "verifier",
-    component: verifier,
-    meta: { requireRole: true },
+    name: "App",
+    component: Container,
+    meta: {
+      requiresAuth: true,
+    },
+    children: [
+      {
+        path: "home",
+        name: "Home",
+        component: Home,
+      },
+      {
+        path: "role",
+        name: "Role",
+        component: chooseRole,
+      },
+      {
+        path: "userpage",
+        name: "Userpage",
+        component: userpage,
+      },
+    ],
   },
 ];
 
 const router = new VueRouter({
   routes,
+  mode: "history",
 });
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requireRole) {
     if (store.getters.getChosenRole == null) {
-      next({ name: "chooserole" });
+      next({ name: "Role" });
     }
     if (!store.getters.getSuccesfullLogin) {
-      next({ name: "start" });
+      next({ name: "Login" });
     } else {
       next();
     }
   } else if (to.meta.requireCode) {
     if (!store.getters.getSuccesfullLogin) {
-      next({ name: "start" });
+      next({ name: "Login" });
     } else {
       next();
     }
