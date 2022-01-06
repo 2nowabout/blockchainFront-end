@@ -31,10 +31,6 @@
 <script>
 export default {
   name: "chooserole",
-  beforeMount() {
-    console.log("registerWeb3 Action dispatched from casino-dapp.vue");
-    this.$store.dispatch("registerWeb3");
-  },
   mounted() {
     console.log("dispatching getContractInstance");
     this.$store.dispatch("getContractInstance");

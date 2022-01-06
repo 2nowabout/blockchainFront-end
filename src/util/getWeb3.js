@@ -7,23 +7,26 @@ import Web3 from "web3";
  * 4. Get user account from metamask
  * 5. Get user balance
  */
-function start() {
-  let getWeb3 = new Promise(function (resolve, reject) {
+
+async function start() {
+  await window.ethereum.send("eth_requestAccounts");
+  const getWeb3 = new Promise((resolve, reject) => {
     // Check for injected web3 (mist/metamask)
     // From now on, this should always be true:
     // provider === window.ethereum
     if (window.ethereum) {
-      window.ethereum.send("eth_requestAccounts");
       window.web3 = new Web3(window.ethereum);
-      var web3 = window.web3;
-
-      resolve({
-        injectedWeb3: window.ethereum.isMetaMask,
-        web3() {
-          console.log(web3);
-          return web3;
-        },
-      });
+      try {
+        var web3 = window.web3;
+        resolve({
+          injectedWeb3: window.ethereum.isMetaMask,
+          web3() {
+            return web3;
+          },
+        });
+      } catch (error) {
+        reject(error);
+      }
     } else {
       // web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')) GANACHE FALLBACK
       reject(new Error("Unable to connect to Metamask"));
