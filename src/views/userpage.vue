@@ -19,6 +19,22 @@
         </v-card-actions>
       </v-card>
     </v-col>
+    <v-col cols="4">
+      <v-card color="card">
+        <v-card-title style="text-align: center"
+          >2. Extra certificate information</v-card-title
+        >
+        <v-card-actions class="justify-center">
+          <v-text-field
+            ref="certificateDate"
+            v-model="certificateinfo.certificateDate"
+            required
+            label="Date of emission"
+          >
+          </v-text-field>
+        </v-card-actions>
+      </v-card>
+    </v-col>
   </v-row>
 </template>
 
@@ -27,6 +43,16 @@ export default {
   data() {
     return {
       uploadedFile: null,
+      certificateinfo: {
+        certificateDate: null,
+        certificateExperationDate: null,
+      },
+      userinfo: {
+        name: null,
+        age: null,
+        address: null,
+        zipcode: null,
+      },
     };
   },
   methods: {

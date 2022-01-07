@@ -10,7 +10,7 @@
           @click="redirect(item.name)"
           :ripple="false"
         >
-          <v-icon class="card-text">{{ item.icon }}</v-icon>
+          <v-icon size="250px" class="card-text">{{ item.icon }}</v-icon>
 
           <v-card-title class="justify-center card-text">{{
             item.name

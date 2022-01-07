@@ -6,7 +6,10 @@
         <v-img src="/blockchain-1.svg" height="500px" contain />
       </v-col>
       <v-col cols="6">
-        <h2 class="text-center white--text" style="width: 50%">
+        <h2
+          class="text-center white--text"
+          style="width: 100%; margin-top: -20%"
+        >
           This demo has been brough to you by Weconomics for companies that want
           to experience Blockchain Technology. Click the button below to start!
         </h2>

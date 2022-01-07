@@ -22,7 +22,7 @@ const routes = [
     name: "App",
     component: Container,
     meta: {
-      requiresAuth: true,
+      requireCode: true,
     },
     children: [
       {
