@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import start from "../util/getWeb3";
 import pollWeb3 from "../util/pollWeb3";
 import getContract from "../util/getContract";
+import getIPFS from "../util/getIPFS";
 
 Vue.use(Vuex);
 
@@ -24,14 +25,22 @@ export default new Vuex.Store({
       { text: "Home", to: "/home" },
       { text: "Choose Role", to: "/role" },
     ],
+    ipfs: null,
   },
   getters: {
     getCode: (state) => state.logincode,
     getSuccesfullLogin: (state) => state.succesfullLogin,
     getChosenRole: (state) => state.choosenRole,
     getNavItems: (state) => state.items,
+    getIPFS: (state) => state.ipfs,
   },
   mutations: {
+    registerIPFSinstance(state, payload) {
+      console.log("IPFS CHECK" + payload);
+      let result = payload;
+      console.log(result);
+      state.ipfs = result;
+    },
     registerWeb3Instance(state, payload) {
       console.log("registerWeb3instance Mutation being executed", payload);
       let result = payload;
@@ -79,6 +88,15 @@ export default new Vuex.Store({
     },
   },
   actions: {
+    registerIPFS({ commit }) {
+      console.log("registering IPFS Storage system");
+      getIPFS()
+        .then((result) => {
+          console.log(result);
+          commit("registerIPFSinstance", result);
+        })
+        .catch((e) => console.log(e));
+    },
     registerWeb3({ commit }) {
       console.log("registerWeb3 Action being executed");
       start()

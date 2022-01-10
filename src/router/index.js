@@ -6,6 +6,7 @@ import chooseRole from "../views/chooserole.vue";
 import Login from "../views/Login.vue";
 import store from "../store";
 import userpage from "../views/userpage.vue";
+import dapp from "../views/certificate-dapp.vue";
 //import employer from "../views/employerpage.vue";
 //import verifier from "../views/verifierpage.vue";
 
@@ -16,6 +17,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/main",
+    name: "main",
+    component: dapp,
   },
   {
     path: "/",

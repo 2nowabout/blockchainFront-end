@@ -26,9 +26,25 @@
           label="Username for hashes"
         />
       </v-row>
+      <v-row style="margin-top: 3%">
+        <v-col cols="1">
+          <p>IPFS test:</p>
+        </v-col>
+        <v-col cols="4">
+          <v-text-field
+            v-model="Ipfsstring"
+            width="50px"
+            label="string to IPFS"
+          />
+        </v-col>
+        <v-col cols="2">
+          <v-btn depressed @click="sendToIPFS()"> Send to IPFS </v-btn>
+        </v-col>
+      </v-row>
     </v-container>
-
-    <hello-metamask />
+    <v-row style="margin-top: 2%; margin-left: 2%">
+      <hello-metamask />
+    </v-row>
   </div>
 </template>
 <script>
@@ -42,12 +58,15 @@ export default {
   mounted() {
     console.log("dispatching getContractInstance");
     this.$store.dispatch("getContractInstance");
+    this.$store.dispatch("registerIPFS");
   },
   components: {
     "hello-metamask": HelloMetamask,
   },
   data() {
     return {
+      Ipfshash: null,
+      Ipfsstring: null,
       setHash: {
         hash: null,
       },
@@ -59,6 +78,18 @@ export default {
     };
   },
   methods: {
+    sendToIPFS() {
+      console.log("executing ipfs button");
+      console.log(this.$store.getters.getIPFS);
+      const ipfs = this.$store.getters.getIPFS;
+      ipfs.add(this.Ipfsstring, (err, hash) => {
+        if (err) {
+          return console.log(err);
+        }
+        this.Ipfshash = hash;
+      });
+      alert(this.Ipfshash);
+    },
     storeCertificate() {
       this.$store.state
         .contractInstance()
