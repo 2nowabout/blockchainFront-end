@@ -62,6 +62,7 @@ export default {
       // route to correct page when clicked on card 🙂
       switch (type) {
         case "Normal user":
+          this.$store.commit("setRole", "Normal user");
           this.$router.push("userpage");
           this.$store.commit("addNavItem", {
             text: "To Role",

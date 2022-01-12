@@ -37,7 +37,7 @@
               <v-list-item-title
                 v-text="'Logout'"
                 class="font-weight-bold subtitle-1 white--text"
-                to="/login"
+                @click="logout()"
               ></v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -66,6 +66,12 @@ export default {
   computed: {
     getNavItems: function () {
       return this.$store.getters.getNavItems;
+    },
+  },
+  methods: {
+    logout() {
+      this.$store.commit("fullReset");
+      this.$router.push("/login");
     },
   },
 

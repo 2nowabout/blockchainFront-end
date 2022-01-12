@@ -23,13 +23,14 @@
               <v-text-field
                 filled
                 label="Code"
+                v-model="code"
                 single-line
                 required
                 prepend-inner-icon="mdi-lock"
                 style="letter-spacing: 5px"
               ></v-text-field>
               <v-btn
-                @click="login"
+                @click="checkCode()"
                 height="50px"
                 elevation="0"
                 width="100%"
@@ -58,7 +59,7 @@ export default {
   },
   components: {},
   methods: {
-    login: function () {
+    login() {
       // Validate code and set variable that authenticated is true
       this.$router.push("/home");
     },

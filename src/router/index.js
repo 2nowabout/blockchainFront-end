@@ -35,16 +35,25 @@ const routes = [
         path: "home",
         name: "Home",
         component: Home,
+        meta: {
+          requireCode: true,
+        },
       },
       {
         path: "role",
         name: "Role",
         component: chooseRole,
+        meta: {
+          requireCode: true,
+        },
       },
       {
         path: "userpage",
         name: "Userpage",
         component: userpage,
+        meta: {
+          requireRole: true,
+        },
       },
     ],
   },
