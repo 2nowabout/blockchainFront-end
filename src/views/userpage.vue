@@ -110,11 +110,13 @@
 </template>
 
 <script>
+import { makeHttpCall, requestTypes } from "@/restCon/restCon.js";
 export default {
   data() {
     return {
       menu1: false,
       menu2: false,
+
       uploadedFile: null,
       certificateinfo: {
         certificateDate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
@@ -134,7 +136,9 @@ export default {
     };
   },
   methods: {
-    Upload() {},
+    Upload() {
+
+    },
   },
 };
 </script>

@@ -39,12 +39,14 @@ export async function makeHttpCall(link, type, body) {
   if (typeof link === "string" || link instanceof String) {
     var toReturn = null;
     await sendToServer(link, type, body)
-      .then(function (response) {
+      .then(function(response) {
         toReturn = response;
       })
-      .catch(function (error) {
+      .catch(function(error) {
         return error;
       });
     return toReturn;
   }
 }
+
+/* ----------------------------------- */
