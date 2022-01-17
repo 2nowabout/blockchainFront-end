@@ -8,7 +8,7 @@ async function sendToServer(link, type, data) {
       method: "GET",
       headers: {
         "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/json",
+        "Content-type": "multipart/form-data",
       },
     });
   }
@@ -18,7 +18,6 @@ async function sendToServer(link, type, data) {
     var headers = null;
     headers = {
       "Access-Control-Allow-Origin": "*",
-      "Content-Type": "application/json",
     };
     response = await fetch(link, {
       method: type,
@@ -39,10 +38,10 @@ export async function makeHttpCall(link, type, body) {
   if (typeof link === "string" || link instanceof String) {
     var toReturn = null;
     await sendToServer(link, type, body)
-      .then(function(response) {
+      .then(function (response) {
         toReturn = response;
       })
-      .catch(function(error) {
+      .catch(function (error) {
         return error;
       });
     return toReturn;
