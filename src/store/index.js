@@ -26,6 +26,8 @@ export default new Vuex.Store({
       { text: "Choose Role", to: "/role" },
     ],
     ipfs: null,
+    complete: false,
+    employerReady: false,
   },
   getters: {
     getCode: (state) => state.logincode,
@@ -33,6 +35,8 @@ export default new Vuex.Store({
     getChosenRole: (state) => state.choosenRole,
     getNavItems: (state) => state.items,
     getIPFS: (state) => state.ipfs,
+    getComplete: (state) => state.complete,
+    getEmployerReady: (state) => state.employerReady,
   },
   mutations: {
     registerIPFSinstance(state, payload) {
@@ -76,6 +80,12 @@ export default new Vuex.Store({
     },
     setRole(state, role) {
       state.choosenRole = role;
+    },
+    setComplete(state, complete) {
+      state.complete = complete;
+    },
+    setEmployerReady(state, employerReady) {
+      state.employerReady = employerReady;
     },
     addNavItem(state, item) {
       for (let i = 0; i < state.items.length; i++) {

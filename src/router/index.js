@@ -7,8 +7,8 @@ import Login from "../views/Login.vue";
 import store from "../store";
 import userpage from "../views/userpage.vue";
 import dapp from "../views/certificate-dapp.vue";
-//import employer from "../views/employerpage.vue";
-//import verifier from "../views/verifierpage.vue";
+import employer from "../views/employerpage.vue";
+import verifier from "../views/verifierpage.vue";
 
 Vue.use(VueRouter);
 
@@ -51,6 +51,22 @@ const routes = [
         path: "userpage",
         name: "Userpage",
         component: userpage,
+        meta: {
+          requireRole: true,
+        },
+      },
+      {
+        path: "employer",
+        name: "Employer",
+        component: employer,
+        meta: {
+          requireRole: true,
+        },
+      },
+      {
+        path: "verifier",
+        name: "Verifier",
+        component: verifier,
         meta: {
           requireRole: true,
         },

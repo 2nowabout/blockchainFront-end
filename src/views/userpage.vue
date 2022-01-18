@@ -81,7 +81,7 @@
           <v-card-actions>
             <v-text-field
               v-model="ipfsdata.userinfo.name"
-              label="Name*"
+              label="Name"
               required
               :rules="[rules.required]"
             >
@@ -140,6 +140,12 @@
         </v-card-actions>
       </v-card>
     </v-col>
+    <v-overlay :value="this.$store.getters.getComplete">
+      <v-card>
+        <v-card-title style="text-align: center">You are done!</v-card-title>
+        <v-card-text> Watch the other screens! </v-card-text>
+      </v-card>
+    </v-overlay>
   </v-row>
 </template>
 
@@ -194,9 +200,12 @@ export default {
 
     onSubmit: function () {},
     Upload: function () {
+      if (!this.$refs.userinfo.validate()) {
+        return;
+      }
+
       let comp = this;
       this.toBase64(this.uploadedFile).then((result) => {
-        console.log(result);
         makeHttpCall(
           "http://localhost:8020/blockchain/fileEncryption",
           requestTypes.POST,
@@ -208,27 +217,26 @@ export default {
         });
       });
 
-      console.log("send file");
-      console.log(this.encryptedFile);
-      if (!this.$refs.userinfo.validate()) {
-        return;
-      }
+      const ipfs = this.$store.getters.getIPFS;
 
-      // this.$store.state
-      //   .contractInstance()
-      //   .methods.StoreCertificate(this.encryptedFile, this.userinfo.name)
-      //   .send({ from: this.$store.state.web3.coinbase });
-      // console.log(this.$store.state.web3.eth.getTransaction);
+      ipfs.add(this.ipfsdata, (err, hash) => {
+        if (err) {
+          return console.log(err);
+        }
+        this.Ipfshash = hash;
+      });
+      alert(this.Ipfshash);
 
-      // const ipfs = this.$store.getters.getIPFS;
-
-      // ipfs.add(this.ipfsdata, (err, hash) => {
-      //   if (err) {
-      //     return console.log(err);
-      //   }
-      //   this.Ipfshash = hash;
-      // });
-      // alert(this.Ipfshash);
+      this.$store.state
+        .contractInstance()
+        .methods.StoreCertificate(
+          this.encryptedFile,
+          this.Ipfshash,
+          this.userinfo.name
+        )
+        .send({ from: this.$store.state.web3.coinbase });
+      console.log(this.$store.state.web3.eth.getTransaction);
+      this.$store.commit("setComplete", true);
     },
 
     Verify() {
