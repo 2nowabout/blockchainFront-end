@@ -24,6 +24,8 @@ async function sendToServer(link, type, data) {
       headers: headers,
       body: JSON.stringify(data),
     });
+    console.log("restapi check");
+    console.log(response);
   }
   return response;
 }

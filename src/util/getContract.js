@@ -5,7 +5,6 @@ let getContract = new Promise(function (resolve) {
   let web3 = new Web3(window.ethereum);
   let certificateContract = new web3.eth.Contract(ABI, address);
   console.log(address);
-  //casinoContractInstance = () => casinoContractInstance
   resolve(certificateContract);
 });
 export default getContract;

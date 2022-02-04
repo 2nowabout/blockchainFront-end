@@ -78,15 +78,20 @@ export default {
     };
   },
   methods: {
-    sendToIPFS() {
+    async sendToIPFS() {
       console.log("executing ipfs button");
       console.log(this.$store.getters.getIPFS);
       const ipfs = this.$store.getters.getIPFS;
-      ipfs.add(this.Ipfsstring, (err, hash) => {
-        if (err) {
-          return console.log(err);
-        }
-        this.Ipfshash = hash;
+      let comp = this;
+      await new Promise((resolve) => {
+        ipfs.add(this.Ipfsstring, (err, hash) => {
+          if (err) {
+            return console.log(err);
+          }
+          resolve(hash);
+        });
+      }).then((result) => {
+        comp.Ipfshash = result;
       });
       alert(this.Ipfshash);
     },

@@ -27,7 +27,7 @@ export default new Vuex.Store({
     ],
     ipfs: null,
     complete: false,
-    employerReady: false,
+    employerWait: true,
   },
   getters: {
     getCode: (state) => state.logincode,
@@ -36,7 +36,7 @@ export default new Vuex.Store({
     getNavItems: (state) => state.items,
     getIPFS: (state) => state.ipfs,
     getComplete: (state) => state.complete,
-    getEmployerReady: (state) => state.employerReady,
+    getEmployerWait: (state) => state.employerWait,
   },
   mutations: {
     registerIPFSinstance(state, payload) {
@@ -44,6 +44,8 @@ export default new Vuex.Store({
       let result = payload;
       console.log(result);
       state.ipfs = result;
+      console.log("----------------------------------------------------------");
+      console.log(state.ipfs);
     },
     registerWeb3Instance(state, payload) {
       console.log("registerWeb3instance Mutation being executed", payload);
@@ -84,8 +86,10 @@ export default new Vuex.Store({
     setComplete(state, complete) {
       state.complete = complete;
     },
-    setEmployerReady(state, employerReady) {
-      state.employerReady = employerReady;
+    setEmployerWait(state, employerWait) {
+      if (employerWait) {
+        state.employerWait = false;
+      }
     },
     addNavItem(state, item) {
       for (let i = 0; i < state.items.length; i++) {
@@ -100,9 +104,8 @@ export default new Vuex.Store({
   actions: {
     registerIPFS({ commit }) {
       console.log("registering IPFS Storage system");
-      getIPFS()
+      getIPFS
         .then((result) => {
-          console.log(result);
           commit("registerIPFSinstance", result);
         })
         .catch((e) => console.log(e));

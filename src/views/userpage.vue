@@ -13,6 +13,11 @@
           >
           </v-file-input>
         </v-card-actions>
+        <v-card-actions>
+          <v-btn width="100%" color="primary" v-on:click="UploadFile">
+            Upload file</v-btn
+          >
+        </v-card-actions>
       </v-card>
       <v-card color="card" style="margin-top: 4%">
         <v-card-title style="text-align: center"
@@ -133,7 +138,7 @@
           >4. Upload information</v-card-title
         >
         <v-card-actions>
-          <v-btn color="primary" v-on:click="Upload"> Upload </v-btn>
+          <v-btn color="primary" @click="UploadAll()"> Upload </v-btn>
         </v-card-actions>
         <v-card-actions>
           <v-btn color="primary" @click="Verify()"> Verify </v-btn>
@@ -199,31 +204,40 @@ export default {
     },
 
     onSubmit: function () {},
-    Upload: function () {
-      if (!this.$refs.userinfo.validate()) {
-        return;
-      }
+    UploadFile: async function () {
+      // if (!this.$refs.userinfo.validate()) {
+      //   return;
+      // }
 
       let comp = this;
-      this.toBase64(this.uploadedFile).then((result) => {
+      await this.toBase64(this.uploadedFile).then((result) => {
         makeHttpCall(
           "http://localhost:8020/blockchain/fileEncryption",
           requestTypes.POST,
           result
         ).then((response) => {
+          console.log(response);
           response.json().then((encrypted) => {
-            comp.encryptedFile = encrypted;
+            console.log(encrypted);
+            comp.encryptedFile = encrypted.hash;
           });
         });
       });
-
+    },
+    async UploadAll() {
+      console.log(this.encryptedFile);
+      console.log("getting ipfs");
       const ipfs = this.$store.getters.getIPFS;
-
-      ipfs.add(this.ipfsdata, (err, hash) => {
-        if (err) {
-          return console.log(err);
-        }
-        this.Ipfshash = hash;
+      let comp = this;
+      await new Promise((resolve) => {
+        ipfs.addJSON(this.ipfsdata, (err, hash) => {
+          if (err) {
+            return console.log(err);
+          }
+          resolve(hash);
+        });
+      }).then((result) => {
+        comp.Ipfshash = result;
       });
       alert(this.Ipfshash);
 
@@ -232,17 +246,16 @@ export default {
         .methods.StoreCertificate(
           this.encryptedFile,
           this.Ipfshash,
-          this.userinfo.name
+          this.ipfsdata.userinfo.name
         )
         .send({ from: this.$store.state.web3.coinbase });
-      console.log(this.$store.state.web3.eth.getTransaction);
       this.$store.commit("setComplete", true);
     },
 
     Verify() {
       this.$store.state
         .contractInstance()
-        .methods.findCertificates(this.userinfo.name)
+        .methods.findCertificates(this.ipfsdata.userinfo.name)
         .call({ from: this.$store.state.web3.coinbase })
         .then((result) => {
           alert(result);

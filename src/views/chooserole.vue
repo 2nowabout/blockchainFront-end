@@ -34,6 +34,7 @@ export default {
   mounted() {
     console.log("dispatching getContractInstance");
     this.$store.dispatch("getContractInstance");
+    this.$store.dispatch("registerIPFS");
   },
   data: () => ({
     cards: [
@@ -70,6 +71,7 @@ export default {
           });
           break;
         case "Employer":
+          this.$store.commit("setRole", "Employer");
           this.$router.push("employer");
           this.$store.commit("addNavItem", {
             text: "To Role",
@@ -77,6 +79,7 @@ export default {
           });
           break;
         case "Verifier":
+          this.$store.commit("setRole", "Verifier");
           this.$router.push("verifier");
           this.$store.commit("addNavItem", {
             text: "To Role",

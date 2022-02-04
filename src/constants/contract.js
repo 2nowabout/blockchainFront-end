@@ -1,10 +1,28 @@
-const address = "0xc3Ad8de373059763323F00200D6c7075abC78c90";
+const address = "0x7aA750570d0AcabDfde061EE8bdcE92b9d60849a";
 const ABI = [
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "bool",
+        name: "done",
+        type: "bool",
+      },
+    ],
+    name: "storedCertificate",
+    type: "event",
+  },
   {
     inputs: [
       {
         internalType: "string",
         name: "hash",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "ipfshash",
         type: "string",
       },
       {
@@ -29,12 +47,44 @@ const ABI = [
     name: "findCertificates",
     outputs: [
       {
-        internalType: "string[]",
+        components: [
+          {
+            internalType: "string",
+            name: "hash",
+            type: "string",
+          },
+          {
+            internalType: "string",
+            name: "ipfshash",
+            type: "string",
+          },
+        ],
+        internalType: "struct Certificate.Certificatestruct[]",
         name: "",
-        type: "string[]",
+        type: "tuple[]",
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getBalance",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "testEvent",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
